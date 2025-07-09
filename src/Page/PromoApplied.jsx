@@ -2,17 +2,18 @@ import React from 'react'
 import Banner from '../Component/Banner'
 import Progress from '../Component/Progress'
 
-function Form3() {
-  return (
+function PromoApplied() {
+ return (
     <>
-      <Banner  />
+    <Banner/>
     <div className='' >
-      <Progress page={3} />
-      Form3
-    </div>
+        <Progress page={5} />
+        
+        Promo code applied
+        </div>
     <Banner/>
     </>
   )
 }
 
-export default Form3
+export default PromoApplied
