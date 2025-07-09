@@ -13,8 +13,7 @@ function Progress({ page }) {
         const isUpcoming = step > page;
 
         return (
-          <React.Fragment key={step}>
-            {/* Step Circle */}
+          <>
             <div
               className={`w-8 h-8 sm:w-9 sm:h-9 md:w-10 md:h-10 rounded-full flex items-center justify-center text-sm font-bold
                 ${
@@ -29,7 +28,6 @@ function Progress({ page }) {
               {isCompleted ? "✓" : step}
             </div>
 
-            {/* Progress line */}
             {step !== totalSteps && (
               <div
                 className={`h-1 w-10 sm:w-14 md:w-16 
@@ -43,7 +41,7 @@ function Progress({ page }) {
                 `}
               ></div>
             )}
-          </React.Fragment>
+          </>
         );
       })}
     </div>

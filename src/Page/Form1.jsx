@@ -1,11 +1,15 @@
-import React from "react";
+import React, { useState } from "react";
 import Banner from "../Component/Banner";
 import Background from "../assets/images/Background.png";
 import Progress from "../Component/Progress";
 import BannerImg from "../assets/images/Banner.png";
 import Logos from "../assets/images/FormLogo.png";
+import SolutionAndProducts from "../Component/SolutionAndProducts";
+import { useNavigate } from "react-router-dom";
 
 function Form1() {
+  const navigate = useNavigate();
+
   const items = [
     { text: "Global Leaders Forum !NEW", day: "(3 Days)", value: true },
     { text: "GITEX Main Stage", day: "", value: "" },
@@ -21,31 +25,49 @@ function Form1() {
     { text: "Future Mobility", day: "(1 Days)", value: true },
   ];
 
+  const [showModal, setShowModal] = useState(false);
+  const [mainAndSub, setMainAndSub] = useState(false);
+
+  const handleModal = () => {
+    setShowModal(true);
+  };
+
   return (
     <>
       <Banner login="Login" />
+
+      {showModal && (
+        <SolutionAndProducts
+          show={true}
+          onClose={() => {
+            setShowModal(false);
+            setMainAndSub(true);
+          }}
+        />
+      )}
+
       <div
-        className="bg-[#FAFAFA] w-full min-h-screen bg-cover bg-center pb-20 flex flex-col justify-center gap-5 overflow-x-hidden px-4 sm:px-0"
+        className="bg-[#FAFAFA] w-full min-h-screen bg-cover bg-center pb-20 px-4 sm:px-0"
         style={{ backgroundImage: `url(${Background})` }}
       >
         <Progress page={1} />
 
         <div className="max-w-7xl mx-auto mt-8 bg-white rounded-lg shadow p-4 md:p-6 lg:p-10 border border-[#579B29]">
           <div className="flex flex-col lg:flex-row gap-6 lg:gap-12 lg:items-start">
-            <div className="w-full lg:w-[65%] lg:flex-shrink-0 shadow rounded-lg">
-              <div className="w-full h-20 sm:h-24 rounded-tr-[6px] rounded-tl-[6px] bg-gradient-to-r from-[#299D3F] to-[#123F22] px-3 sm:px-4 flex flex-col sm:flex-row justify-between items-center gap-2 sm:gap-0">
+            <div className="w-full lg:w-[65%] shadow rounded-lg">
+              <div className="w-full h-20 sm:h-24 rounded-t-lg bg-gradient-to-r from-[#299D3F] to-[#123F22] px-4 flex flex-col sm:flex-row justify-between items-center gap-2 sm:gap-0">
                 <h1 className="text-white text-lg sm:text-2xl lg:text-3xl font-bold text-center sm:text-left">
                   Registration Information 1
                 </h1>
-                <div className="bg-white/5 text-white text-center px-2 sm:px-4 py-1 sm:py-2 font-light border border-white rounded-md text-xs sm:text-sm">
+                <div className="bg-white/5 text-white px-3 py-1 font-light border border-white rounded-md text-xs sm:text-sm text-center">
                   PREMIUM TICKET - FREE Incl. 19% VAT
                 </div>
               </div>
 
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-x-6 gap-y-4 px-6 py-5">
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-x-6 gap-y-4 px-6 py-5">
                 {[
                   { label: "First name", required: true },
-                  { label: "Seconde name", required: true },
+                  { label: "Second name", required: true },
                   {
                     label: "Country of residence",
                     type: "select",
@@ -164,21 +186,58 @@ function Form1() {
                     )}
                   </div>
                 ))}
+              </div>
 
-                <p>
+              {/* Select Products Button */}
+              <div className="w-full flex flex-col sm:flex-row justify-between items-start sm:items-center gap-2 px-4">
+                <p className="text-sm sm:text-base">
                   What products & services are you interested in?{" "}
                   <span className="text-[#DF1E3B]">*</span>
                 </p>
-
-                <div className="flex justify-end">
-                  <button className="bg-gradient-to-r from-[#AB0202] to-[#240102] text-white uppercase py-0.5 rounded-[7px] px-2 ">
-                    select <span className="font-bold">Solutions/Products</span>
-                  </button>
-                </div>
+                <button
+                  className="bg-gradient-to-r from-[#AB0202] to-[#240102] text-white uppercase text-xs rounded-[7px] py-1 px-3"
+                  onClick={handleModal}
+                >
+                  select <span className="font-bold">Solutions/Products</span>
+                </button>
               </div>
 
+              {mainAndSub && (
+                <div className="w-full px-4 sm:px-6 mt-3">
+                  <div className="mb-4">
+                    <h1 className="font-semibold text-sm sm:text-base">
+                      Main Categories
+                    </h1>
+                    <div className="flex flex-wrap gap-2 sm:gap-3 mt-3">
+                      <p className="bg-[#5E3169] text-white px-3 py-1 rounded-2xl font-semibold text-xs sm:text-sm">
+                        Artificial Intelligence & Robotics
+                      </p>
+                      <p className="bg-[#5E3169] text-white px-3 py-1 rounded-2xl font-semibold text-xs sm:text-sm">
+                        Artificial Intelligence & Robotics
+                      </p>
+                    </div>
+                  </div>
+                  <div>
+                    <h1 className="font-semibold text-sm sm:text-base">
+                      Sub Categories
+                    </h1>
+                    <div className="flex flex-wrap gap-2 sm:gap-3 mt-3">
+                      <p className="bg-[#F5F5F5] border font-semibold border-[#D0D0D0] text-[#616161] px-3 py-1 rounded-2xl text-xs sm:text-sm">
+                        Edge Computing
+                      </p>
+                      <p className="bg-[#F5F5F5] border font-semibold border-[#D0D0D0] text-[#616161] px-3 py-1 rounded-2xl text-xs sm:text-sm">
+                        AI & Robotics
+                      </p>
+                      <p className="bg-[#F5F5F5] border font-semibold border-[#D0D0D0] text-[#616161] px-3 py-1 rounded-2xl text-xs sm:text-sm">
+                        Edge Computing
+                      </p>
+                    </div>
+                  </div>
+                </div>
+              )}
+
               <div className="flex flex-col gap-3 px-6 py-5">
-                <h1 className="font-medium">
+                <h1 className="font-medium text-sm sm:text-base">
                   Select Workshop{" "}
                   <span className="text-[#6F6969]">(Maximum 6 can Select)</span>
                 </h1>
@@ -208,7 +267,7 @@ function Form1() {
               </div>
             </div>
 
-            <div className="w-full lg:w-[35%] xl:w-[30%] lg:flex-shrink-0 flex flex-col bg-white shadow rounded-xl lg:self-start">
+            <div className="w-full lg:w-[35%] xl:w-[30%] flex flex-col bg-white shadow rounded-xl lg:self-start">
               <div
                 className="w-full h-20 sm:h-24 rounded-tr-[6px] rounded-tl-[6px] bg-gradient-to-r from-[#5B2A7C] to-[#451D5D] px-3 sm:px-5 flex items-center"
                 style={{ backgroundImage: `url(${BannerImg})` }}
@@ -250,13 +309,16 @@ function Form1() {
           </div>
         </div>
 
-        {/* Bottom Button */}
-        <div className="w-full flex justify-center">
-          <button className="bg-gradient-to-r from-[#27963D] to-[#134323] px-4 py-2 text-white rounded-md text-sm sm:text-base font-semibold cursor-pointer">
+        <div className="w-full flex justify-center mt-6">
+          <button
+            className="bg-gradient-to-r from-[#27963D] to-[#134323] px-6 py-2 text-white rounded-md text-sm sm:text-base font-semibold"
+            onClick={() => navigate("/Form2")}
+          >
             Next
           </button>
         </div>
       </div>
+
       <Banner />
     </>
   );
