@@ -308,7 +308,7 @@ function Form2() {
           </div>
         </div>
 
-        <div className="w-full flex justify-center mt-6 gap-6">
+        <div className="w-full flex justify-center mt-6 gap-5">
           <button
             className="bg-gradient-to-r from-[#5C2F66] to-[#25102C] px-6 py-2 text-white rounded-md text-sm sm:text-base font-semibold"
             onClick={() => navigate(-1)}

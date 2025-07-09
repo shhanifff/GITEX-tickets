@@ -6,7 +6,6 @@ import Form3 from "./Page/Form3";
 import Success from "./Page/Success";
 import React from "react";
 import PromoCode from "./Page/PromoCode";
-import PromoApplied from "./Page/PromoApplied";
 
 function App() {
   return (
@@ -17,7 +16,6 @@ function App() {
         <Route path="/Form2" element={<Form2 />} />
         <Route path="/Form3" element={<Form3 />} />
         <Route path="/PromoCode" element={<PromoCode />} />
-        <Route path="/PromoCode-Applied" element={<PromoApplied />} />
         <Route path="/Success" element={<Success />} />
       </Routes>
     </>
