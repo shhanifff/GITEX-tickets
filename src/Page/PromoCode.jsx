@@ -20,12 +20,10 @@ function PromoCode() {
 
         <div className="flex justify-center items-center">
           <div className="bg-white w-full max-w-4xl rounded-xl shadow-2xl py-5 px-4 sm:px-6">
-            {/* Header */}
             <div className="bg-gradient-to-r from-[#299D3F] to-[#123F22] text-white text-lg sm:text-xl font-bold px-4 sm:px-5 py-4 sm:py-5 rounded-md mb-6">
               Registration Summary
             </div>
 
-            {/* Ticket Summary */}
             {apply == false ? (
               <>
                 <div className="text-sm text-black mb-4 border-b border-b-gray-100 flex flex-row justify-between font-medium pb-1">
@@ -53,7 +51,6 @@ function PromoCode() {
               </>
             )}
 
-            {/* Student Ticket */}
             {apply == false ? (
               <div className="text-sm text-black mb-4 border-b border-b-gray-100 flex flex-row justify-between font-medium pb-1">
                 <p>Student Ticket Access On Day 3 Only</p>
@@ -63,7 +60,6 @@ function PromoCode() {
               ""
             )}
 
-            {/* Promo code input */}
             <div className="border border-[#26903B] rounded-md p-3 mb-6 bg-green-50 border-dotted">
               <div>
                 <h1
@@ -76,7 +72,6 @@ function PromoCode() {
               </div>
 
               <div className="w-full flex flex-col">
-                {/* input */}
                 <div className="w-full flex flex-col sm:flex-row justify-between items-stretch mt-2 gap-2">
                   <input
                     className={`w-full sm:w-[90%] ${
@@ -95,7 +90,6 @@ function PromoCode() {
                   </button>
                 </div>
 
-                {/* code details */}
                 {apply == true ? (
                   <>
                     <div className="w-full flex flex-col gap-3 mt-3">
@@ -150,7 +144,6 @@ function PromoCode() {
               ""
             )}
 
-            {/* Price Details */}
             {apply == true ? (
               <>
                 <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-3 mt-4">
@@ -181,7 +174,6 @@ function PromoCode() {
               </div>
             )}
 
-            {/* Checkboxes */}
             <div className="text-xs text-gray-700 space-y-4 mb-6 mt-6">
               <div className="flex items-start gap-2">
                 <input type="checkbox" className="mt-1" />
@@ -208,7 +200,6 @@ function PromoCode() {
           </div>
         </div>
 
-        {/* Navigation */}
         <div className="w-full flex justify-center mt-6 gap-5">
           <button
             className="bg-gradient-to-r from-[#5C2F66] to-[#25102C] px-6 py-2 text-white rounded-md text-sm sm:text-base font-semibold"
