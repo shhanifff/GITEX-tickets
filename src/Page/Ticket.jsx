@@ -143,154 +143,216 @@ function Ticket() {
       <div className="flex flex-col min-h-screen justify-center items-center py-10 px-10 ">
         <div className="w-full grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 px-6 py-6">
           {tickets.map((ticket) => (
-            <div
-              className="h-[500px] rounded-[26px] overflow-hidden relative bg-white"
-              key={ticket.id}
-            >
-              {/* Left Curve */}
-              <div className="absolute left-[-22px] top-[50%] w-11 h-11 bg-white rounded-[140px] z-50"></div>
+            <div key={ticket.id} className="relative">
+              {/* Offer card - moved outside and positioned relative to this wrapper */}
+              {ticket.offer !== "" && (
+                <div className="absolute -left-1 -top-1 z-40">
+                 <svg
+ width="130"
+ height="150"
+ viewBox="0 0 130 150"
+ xmlns="http://www.w3.org/2000/svg"
+ className="relative rounded-tl-2xl"
+>
+ {/* Gradient definition */}
+ <defs>
+   <linearGradient
+     id="offerGradient"
+     x1="0%"
+     y1="0%"
+     x2="100%"
+     y2="100%"
+   >
+     <stop offset="0%" stopColor="#16F25C" />
+     <stop offset="50%" stopColor="#04270F" />
+   </linearGradient>
+ </defs>
 
-              {/* Right Curve */}
-              <div className="absolute right-[-22px] top-[50%] w-11 h-11 bg-white rounded-[140px] z-50"></div>
+ {/* Triangle shape */}
+ <polygon
+   points="0,0 130,0 0,150"
+   fill="url(#offerGradient)"
+ />
 
-              {/*Top*/}
-              <div
-                style={{
-                  backgroundImage: `linear-gradient(to right, ${ticket.BgStart}, ${ticket.BgEnd})`,
-                }}
-                className="w-full h-[20%] relative "
-              >
-                <img
-                  src={Checks}
-                  alt="Checks animation"
-                  className="w-full h-full object-cover absolute inset-0 z-0"
-                />
-
-                <div className="absolute inset-0 z-10 p-4 text-white pl-10">
-                  <h1 className="text-base font-bold text-[20px]">
-                    {ticket.title.toUpperCase()}
-                  </h1>
-                  <h1 className="text-sm text-[17px] text-[#E6FF00]">
-                    EVENT DETAILS →
-                  </h1>
+ {/* Rotated offer text - centered */}
+ <text
+   x="42"
+   y="42"
+   textAnchor="middle"
+   dominantBaseline="middle"
+   transform="rotate(-50, 45, 40)"
+   fill="white"
+   fontSize="20"
+   fontWeight="bold"
+ >
+   {ticket.offer.split(' ')[0]}
+ </text>
+ <text
+   x="42"
+   y="60"
+   textAnchor="middle"
+   dominantBaseline="middle"
+   transform="rotate(-50, 45, 40)"
+   fill="white"
+   fontSize="19"
+   fontWeight="light"
+ >
+   {ticket.offer.split(' ')[1]}
+ </text>
+</svg>
                 </div>
-              </div>
+              )}
 
-              {/* Feater and Blured Image */}
-              <div className="relative w-full h-[80%]">
-                <img
-                  src={ticket.BgImg}
-                  alt="Bg image"
-                  className="w-full h-full object-cover blur-sm"
-                />
-                <div className="absolute inset-0 bg-black/80 p-10">
-                  <h1 className="text-white text-sm leading-relaxed relative ">
-                    Visitor Passes provide
-                    <span className="text-green-400 font-semibold">
-                      3 Days Access
-                    </span>
-                    to GITEX NIGERIA exhibition and all free conference.
-                  </h1>
+              <div className="h-[500px] rounded-[26px] overflow-hidden bg-white relative">
+                {/* Left Curve */}
+                <div className="absolute left-[-22px] top-[50%] w-11 h-11 bg-white rounded-[140px] z-50"></div>
 
-                  {ticket.features.length > 0 ? (
-                    ticket.features.map((text, index) => (
-                      <div className="pt-3 text-left inline-grid" key={index}>
-                        <span
-                          style={{
-                            backgroundColor: text.v ? "" : "Black",
-                            opacity: text.v ? 1 : 0.4,
-                          }}
-                          className="backdrop-blur-md bg-black/20 border border-white/20 text-white rounded-3xl px-1.5 py-1 text-sm inline-flex items-center gap-2"
-                        >
+                {/* Right Curve */}
+                <div className="absolute right-[-22px] top-[50%] w-11 h-11 bg-white rounded-[140px] z-50"></div>
+
+                {/*Top*/}
+                <div
+                  style={{
+                    backgroundImage: `linear-gradient(to right, ${ticket.BgStart}, ${ticket.BgEnd})`,
+                  }}
+                  className="w-full h-[20%] relative "
+                >
+                  <img
+                    src={Checks}
+                    alt="Checks animation"
+                    className="w-full h-full object-cover absolute inset-0 z-0"
+                  />
+
+                  <div
+                    className={`absolute inset-0 z-10 p-4 text-white ${
+                      ticket.offer == "" ? "pl-5" : " pl-24"
+                    } `}
+                  >
+                    <h1 className="text-base font-bold text-[20px]">
+                      {ticket.title.toUpperCase()}
+                    </h1>
+                    <h1 className="text-sm text-[17px] text-[#E6FF00]">
+                      EVENT DETAILS →
+                    </h1>
+                  </div>
+                </div>
+
+                {/* Feater and Blured Image */}
+                <div className="relative w-full h-[80%]">
+                  <img
+                    src={ticket.BgImg}
+                    alt="Bg image"
+                    className="w-full h-full object-cover blur-sm"
+                  />
+                  <div className="absolute inset-0 bg-black/80 p-10">
+                    <h1 className="text-white text-sm leading-relaxed relative ">
+                      Visitor Passes provide
+                      <span className="text-green-400 font-semibold">
+                        3 Days Access
+                      </span>
+                      to GITEX NIGERIA exhibition and all free conference.
+                    </h1>
+
+                    {ticket.features.length > 0 ? (
+                      ticket.features.map((text, index) => (
+                        <div className="pt-3 text-left inline-grid" key={index}>
                           <span
-                            className={`${
-                              text.v ? "bg-green-600" : "bg-green-600/40"
-                            } text-white px-2 rounded-full py-1`}
+                            style={{
+                              backgroundColor: text.v ? "" : "Black",
+                              opacity: text.v ? 1 : 0.4,
+                            }}
+                            className="backdrop-blur-md bg-black/20 border border-white/20 text-white rounded-3xl px-1.5 py-1 text-sm inline-flex items-center gap-2"
                           >
-                            ✓
-                          </span>
-                          {text.text}
-                        </span>
-                      </div>
-                    ))
-                  ) : (
-                    <div className="flex justify-start items-start pt-12">
-                      <img
-                        src={featureLogo}
-                        alt="Feature logo"
-                        className="w-44 sm:w-52 h-auto object-contain"
-                      />
-                    </div>
-                  )}
-
-                  {/* line  */}
-                  {ticket.features.length > 0 ? (
-                    <>
-                      <div className="w-full h-px mt-6 bg-gradient-to-r from-white to-white/5"></div>
-                      <div className="w-full text-left mt-5 flex items-start justify-between">
-                        <div>
-                          <h1 className="text-white text-lg font-semibold mt-1">
-                            {ticket.price > 1 ? `₹${ticket.price}` : "FREE"}
-                          </h1>
-                          <span className="text-xs text-[#8F8F8F] block leading-tight ">
-                            INCL. {ticket.VAT_Percentage}% VAT
+                            <span
+                              className={`${
+                                text.v ? "bg-green-600" : "bg-green-600/40"
+                              } text-white px-2 rounded-full py-1`}
+                            >
+                              ✓
+                            </span>
+                            {text.text}
                           </span>
                         </div>
-                        <div
-                          className="text-black mt-3 bg-white px-3 py-1 font-bold rounded-[7px] cursor-pointer"
-                          onClick={() => navigate("/Form1")}
-                        >
-                          BUY NOW
-                        </div>
-                      </div>
-                    </>
-                  ) : (
-                    <>
-                      <div className="w-full h-px mt-24 bg-gradient-to-r from-white to-white/5"></div>
-                      {/* price offerprice  */}
-                      <div className="w-full py-2 w1/2 text-left text-white text-sm mt-5 flex justify-between">
+                      ))
+                    ) : (
+                      <div className="flex justify-start items-start pt-12">
                         <img
-                          src={Vector}
-                          alt=""
-                          className="absolute  left-20 bottom-10"
+                          src={featureLogo}
+                          alt="Feature logo"
+                          className="w-44 sm:w-52 h-auto object-contain"
                         />
-                        <span className="  font-bold text-xl">
-                          USD{" "}
-                          <>
-                            {"  "}
-                            <span className="text-gray-600">
-                              {ticket.price}
-                            </span>
-                            {"  "}
-                            <span className="bg-black border border-[#BDBDBD] px-3 py-1 rounded-[4.91px]">
-                              {ticket.price - 10.5}
-                            </span>
-                            {"  "}
-                            <span className="text-xs font-light">
-                              Incl. {ticket.VAT_Percentage}% VAT
-                            </span>
-                          </>
-                        </span>
-
-                        {/* qty btn  */}
-
-                        <span
-                          className="bg-white border rounded-sm border-white cursor-pointer"
-                          onClick={() => navigate("/Form1")}
-                        >
-                          <button className="py-1 px-2 bg-black text-white  rounded-tl-sm rounded-bl-sm cursor-pointer">
-                            -
-                          </button>
-                          <span className="py-1 px-3 bg-white text-black ">
-                            {ticket.Quantity}
-                          </span>
-                          <button className="py-1 px-2 bg-black text-white rounded-tr-sm rounded-br-sm cursor-pointer">
-                            +
-                          </button>
-                        </span>
                       </div>
-                    </>
-                  )}
+                    )}
+
+                    {/* line  */}
+                    {ticket.features.length > 0 ? (
+                      <>
+                        <div className="w-full h-px mt-6 bg-gradient-to-r from-white to-white/5"></div>
+                        <div className="w-full text-left mt-5 flex items-start justify-between">
+                          <div>
+                            <h1 className="text-white text-lg font-semibold mt-1">
+                              {ticket.price > 1 ? `₹${ticket.price}` : "FREE"}
+                            </h1>
+                            <span className="text-xs text-[#8F8F8F] block leading-tight ">
+                              INCL. {ticket.VAT_Percentage}% VAT
+                            </span>
+                          </div>
+                          <div
+                            className="text-black mt-3 bg-white px-3 py-1 font-bold rounded-[7px] cursor-pointer"
+                            onClick={() => navigate("/Form1")}
+                          >
+                            BUY NOW
+                          </div>
+                        </div>
+                      </>
+                    ) : (
+                      <>
+                        <div className="w-full h-px mt-24 bg-gradient-to-r from-white to-white/5"></div>
+                        {/* price offerprice  */}
+                        <div className="w-full py-2 w1/2 text-left text-white text-sm mt-5 flex justify-between">
+                          <img
+                            src={Vector}
+                            alt=""
+                            className="absolute  left-20 bottom-10"
+                          />
+                          <span className="  font-bold text-xl">
+                            USD{" "}
+                            <>
+                              {"  "}
+                              <span className="text-gray-600">
+                                {ticket.price}
+                              </span>
+                              {"  "}
+                              <span className="bg-black border border-[#BDBDBD] px-3 py-1 rounded-[4.91px]">
+                                {ticket.price - 10.5}
+                              </span>
+                              {"  "}
+                              <span className="text-xs font-light">
+                                Incl. {ticket.VAT_Percentage}% VAT
+                              </span>
+                            </>
+                          </span>
+
+                          {/* qty btn  */}
+
+                          <span
+                            className="bg-white border rounded-sm border-white cursor-pointer"
+                            onClick={() => navigate("/Form1")}
+                          >
+                            <button className="py-1 px-2 bg-black text-white  rounded-tl-sm rounded-bl-sm cursor-pointer">
+                              -
+                            </button>
+                            <span className="py-1 px-3 bg-white text-black ">
+                              {ticket.Quantity}
+                            </span>
+                            <button className="py-1 px-2 bg-black text-white rounded-tr-sm rounded-br-sm cursor-pointer">
+                              +
+                            </button>
+                          </span>
+                        </div>
+                      </>
+                    )}
+                  </div>
                 </div>
               </div>
             </div>
