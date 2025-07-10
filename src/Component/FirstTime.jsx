@@ -52,7 +52,7 @@ function FirstTime() {
             in each section
           </h1>
 
-          <div className="w-full py-2 gap-2 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3">
+          <div className="w-full py-2 gap-2 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-2">
             {service.map((item, i) => (
               <label key={i} className="flex items-center text-sm sm:text-base">
                 <input type="checkbox" />
