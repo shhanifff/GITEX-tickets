@@ -1,20 +1,4 @@
-// import React from "react";
 
-// function Footer() {
-//   return (
-//     <div className="w-full h-[133px] bg-gradient-to-r from-[#299D3F] to-[#123F22]  flex flex-row justify-end gap-20 pr-20 items-center sticky bottom-0 z-50">
-//       <div className="text-white bg-transparent" >
-//         <h1 className="text-2xl" >Total: <span className="text-4xl font-bold" >EUR 0</span> Incl. 19% VAT
-//         <br />
-//         <span className="text-xl" >View Ticket summary</span>
-//         </h1>
-//       </div>
-//       <div className="text-[#125113] bg-white px-6 py-2 text-2xl rounded-[7px] font-semibold">Buy Now</div>
-//     </div>
-//   );
-// }
-
-// export default Footer;
 
 import React from "react";
 

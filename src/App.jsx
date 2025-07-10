@@ -1,10 +1,10 @@
+import React from "react";
 import { Route, Routes } from "react-router-dom";
 import Ticket from "./Page/Ticket";
 import Form1 from "./Page/Form1";
 import Form2 from "./Page/Form2";
 import Form3 from "./Page/Form3";
 import Success from "./Page/Success";
-import React from "react";
 import PromoCode from "./Page/PromoCode";
 
 function App() {

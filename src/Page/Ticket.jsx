@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import Banner from "../Component/Banner";
 import Ticket1 from "../assets/images/Ticket1bg.png";
 import Ticket2 from "../assets/images/Ticket2.jpg";
@@ -11,9 +11,24 @@ import Footer from "../Component/Footer";
 import featureLogo from "../assets/images/featers_logo.png";
 import Vector from "../assets/images/Vector.png";
 import { useNavigate } from "react-router-dom";
+import FirstTime from "../Component/FirstTime";
 
 function Ticket() {
   const navigate = useNavigate();
+
+  const [firstTime, setFirstTime] = useState(false);
+
+  useEffect(() => {
+    const isFirstTime = localStorage.getItem("firstTime");
+
+    // If no key found, treat as first time
+    if (isFirstTime === null) {
+      localStorage.setItem("firstTime", "true");
+      setFirstTime(true);
+    } else if (isFirstTime === "true") {
+      setFirstTime(true);
+    }
+  }, []);
 
   const tickets = [
     {
@@ -140,77 +155,72 @@ function Ticket() {
   return (
     <>
       <Banner />
+
+      {firstTime && <FirstTime />}
       <div className="flex flex-col min-h-screen justify-center items-center py-10 px-10 ">
         <div className="w-full grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 px-6 py-6">
           {tickets.map((ticket) => (
             <div key={ticket.id} className="relative">
-              {/* Offer card - moved outside and positioned relative to this wrapper */}
               {ticket.offer !== "" && (
                 <div className="absolute -left-1 -top-1 z-40">
-                 <svg
- width="130"
- height="150"
- viewBox="0 0 130 150"
- xmlns="http://www.w3.org/2000/svg"
- className="relative rounded-tl-2xl"
->
- {/* Gradient definition */}
- <defs>
-   <linearGradient
-     id="offerGradient"
-     x1="0%"
-     y1="0%"
-     x2="100%"
-     y2="100%"
-   >
-     <stop offset="0%" stopColor="#16F25C" />
-     <stop offset="50%" stopColor="#04270F" />
-   </linearGradient>
- </defs>
+                  <svg
+                    width="130"
+                    height="150"
+                    viewBox="0 0 130 150"
+                    xmlns="http://www.w3.org/2000/svg"
+                    className="relative rounded-tl-2xl"
+                  >
+                    <defs>
+                      <linearGradient
+                        id="offerGradient"
+                        x1="0%"
+                        y1="0%"
+                        x2="100%"
+                        y2="100%"
+                      >
+                        <stop offset="0%" stopColor="#16F25C" />
+                        <stop offset="50%" stopColor="#04270F" />
+                      </linearGradient>
+                    </defs>
 
- {/* Triangle shape */}
- <polygon
-   points="0,0 130,0 0,150"
-   fill="url(#offerGradient)"
- />
+                    <polygon
+                      points="0,0 130,0 0,150"
+                      fill="url(#offerGradient)"
+                    />
 
- {/* Rotated offer text - centered */}
- <text
-   x="42"
-   y="42"
-   textAnchor="middle"
-   dominantBaseline="middle"
-   transform="rotate(-50, 45, 40)"
-   fill="white"
-   fontSize="20"
-   fontWeight="bold"
- >
-   {ticket.offer.split(' ')[0]}
- </text>
- <text
-   x="42"
-   y="60"
-   textAnchor="middle"
-   dominantBaseline="middle"
-   transform="rotate(-50, 45, 40)"
-   fill="white"
-   fontSize="19"
-   fontWeight="light"
- >
-   {ticket.offer.split(' ')[1]}
- </text>
-</svg>
+                    <text
+                      x="42"
+                      y="42"
+                      textAnchor="middle"
+                      dominantBaseline="middle"
+                      transform="rotate(-50, 45, 40)"
+                      fill="white"
+                      fontSize="20"
+                      fontWeight="bold"
+                    >
+                      {ticket.offer.split(" ")[0]}
+                    </text>
+                    <text
+                      x="42"
+                      y="60"
+                      textAnchor="middle"
+                      dominantBaseline="middle"
+                      transform="rotate(-50, 45, 40)"
+                      fill="white"
+                      fontSize="19"
+                      fontWeight="light"
+                    >
+                      {ticket.offer.split(" ")[1]}
+                    </text>
+                  </svg>
                 </div>
               )}
 
               <div className="h-[500px] rounded-[26px] overflow-hidden bg-white relative">
-                {/* Left Curve */}
-                <div className="absolute left-[-22px] top-[50%] w-11 h-11 bg-white rounded-[140px] z-50"></div>
+                <div className="absolute left-[-22px] top-[50%] w-11 h-11 bg-white rounded-[140px] z-40"></div>
 
-                {/* Right Curve */}
-                <div className="absolute right-[-22px] top-[50%] w-11 h-11 bg-white rounded-[140px] z-50"></div>
+                <div className="absolute right-[-22px] top-[50%] w-11 h-11 bg-white rounded-[140px] z-40"></div>
 
-                {/*Top*/}
                 <div
                   style={{
                     backgroundImage: `linear-gradient(to right, ${ticket.BgStart}, ${ticket.BgEnd})`,
@@ -237,7 +247,6 @@ function Ticket() {
                   </div>
                 </div>
 
-                {/* Feater and Blured Image */}
                 <div className="relative w-full h-[80%]">
                   <img
                     src={ticket.BgImg}
@@ -284,7 +293,6 @@ function Ticket() {
                       </div>
                     )}
 
-                    {/* line  */}
                     {ticket.features.length > 0 ? (
                       <>
                         <div className="w-full h-px mt-6 bg-gradient-to-r from-white to-white/5"></div>
@@ -308,7 +316,6 @@ function Ticket() {
                     ) : (
                       <>
                         <div className="w-full h-px mt-24 bg-gradient-to-r from-white to-white/5"></div>
-                        {/* price offerprice  */}
                         <div className="w-full py-2 w1/2 text-left text-white text-sm mt-5 flex justify-between">
                           <img
                             src={Vector}
@@ -332,8 +339,6 @@ function Ticket() {
                               </span>
                             </>
                           </span>
-
-                          {/* qty btn  */}
 
                           <span
                             className="bg-white border rounded-sm border-white cursor-pointer"
@@ -361,7 +366,7 @@ function Ticket() {
       </div>
 
       <Banner />
-      <Footer />
+      {firstTime ? "" : <Footer />}
     </>
   );
 }

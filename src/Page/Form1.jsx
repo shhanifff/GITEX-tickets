@@ -188,7 +188,6 @@ function Form1() {
                 ))}
               </div>
 
-              {/* Select Products Button */}
               <div className="w-full flex flex-col sm:flex-row justify-between items-start sm:items-center gap-2 px-4">
                 <p className="text-sm sm:text-base">
                   What products & services are you interested in?{" "}

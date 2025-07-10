@@ -27,7 +27,8 @@ function Success() {
             </h2>
             <button
               className="bg-gradient-to-r from-[#27963D] to-[#134323] px-4 py-2 rounded-[6px] text-white cursor-pointer"
-              onClick={() => navigate("/")}
+              onClick={() => {navigate("/"),localStorage.setItem("firstTime", "false");
+}}
             >
               Return To Homepage
             </button>
