@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect } from "react";
 import Banner from "../Component/Banner";
 import Ticket1 from "../assets/images/Ticket1bg.png";
 import Ticket2 from "../assets/images/Ticket2.jpg";
@@ -16,17 +16,14 @@ import FirstTime from "../Component/FirstTime";
 function Ticket() {
   const navigate = useNavigate();
 
-  const [firstTime, setFirstTime] = useState(false);
-
   useEffect(() => {
     const isFirstTime = localStorage.getItem("firstTime");
 
-    // If no key found, treat as first time
     if (isFirstTime === null) {
       localStorage.setItem("firstTime", "true");
-      setFirstTime(true);
+      navigate("/Form1");
     } else if (isFirstTime === "true") {
-      setFirstTime(true);
+      navigate("/Form1");
     }
   }, []);
 
@@ -156,7 +153,6 @@ function Ticket() {
     <>
       <Banner />
 
-      {firstTime && <FirstTime />}
       <div className="flex flex-col min-h-screen justify-center items-center py-10 px-10 ">
         <div className="w-full grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 px-6 py-6">
           {tickets.map((ticket) => (
@@ -366,7 +362,6 @@ function Ticket() {
       </div>
 
       <Banner />
-      {firstTime ? "" : <Footer />}
     </>
   );
 }

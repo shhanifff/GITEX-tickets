@@ -1,33 +1,44 @@
 import React, { useState, useEffect } from "react";
 import BannerImg from "../assets/images/Banner.png";
+import { toast } from "react-toastify";
 
-function SolutionAndProducts({ show, onClose }) {
+function SolutionAndProducts({ show, onClose, bgColor }) {
   const [page, setPage] = useState(1);
   const [showModal, setShowModal] = useState(show);
+  const isFirstTime = localStorage.getItem("firstTime");
+
+  const [selectedProducts, setSelectedProducts] = useState([]);
+  const [selectedServices, setSelectedServices] = useState([]);
 
   useEffect(() => {
     setPage(1);
     setShowModal(show);
+    setSelectedProducts([]);
+    setSelectedServices([]);
   }, [show]);
 
   if (!showModal) return null;
 
   const handleApply = () => {
+    if (selectedProducts.length === 0 || selectedServices.length === 0) {
+      toast.error("Please select at least one Service.");
+      return;
+    }
     setShowModal(false);
     onClose();
   };
 
-  const pageChange = () => {
-    setPage(page + 1);
-  };
-
-  const handleBtn = (action) => {
-    if (action === "page+") {
-      pageChange();
-    } else if (action === "apply") {
-      handleApply();
-    } else if (action === "page-") {
-      setPage(page - 1);
+  const handleCheckboxChange = (type, index) => {
+    if (type === "product") {
+      const alreadySelected = selectedProducts.includes(index);
+      setSelectedProducts((prev) =>
+        alreadySelected ? prev.filter((i) => i !== index) : [...prev, index]
+      );
+    } else if (type === "service") {
+      const alreadySelected = selectedServices.includes(index);
+      setSelectedServices((prev) =>
+        alreadySelected ? prev.filter((i) => i !== index) : [...prev, index]
+      );
     }
   };
 
@@ -57,9 +68,15 @@ function SolutionAndProducts({ show, onClose }) {
     { text: "Future Mobility", day: "(1 Days)", value: true },
   ];
 
+  const currentList = page === 1 ? product : service;
+  const selectedList = page === 1 ? selectedProducts : selectedServices;
+
   return (
-    <div className="fixed inset-0 bg-black/40 flex items-center justify-center z-50 p-4">
+    <div
+      className={`fixed inset-0 ${bgColor} flex items-center justify-center z-50 p-4`}
+    >
       <div className="w-[90%] sm:w-[70%] md:w-[60%] lg:w-[50%] max-h-[90vh] bg-white rounded-2xl flex flex-col overflow-y-auto">
+        {/* Banner Header */}
         <div
           className="w-full rounded-t-2xl shadow-lg p-4 sm:p-6 relative flex items-center justify-between text-white"
           style={{
@@ -71,13 +88,14 @@ function SolutionAndProducts({ show, onClose }) {
             SELECT SOLUTIONS/PRODUCTS
           </h1>
           <button
-            onClick={onClose}
+            onClick={isFirstTime ?'':onClose}
             className="text-white border border-white p-2 rounded-full hover:bg-white hover:text-black transition flex justify-center items-center"
           >
             <i className="bx bx-x text-lg" />
           </button>
         </div>
 
+        {/* Main Content */}
         <div className="w-full flex flex-col px-4 sm:px-6 py-4">
           <div className="w-full h-14 sm:h-16 border rounded-lg border-[#9D9C9C] flex items-center px-3">
             <h1 className="font-medium text-[#444444] text-sm sm:text-base">
@@ -96,27 +114,50 @@ function SolutionAndProducts({ show, onClose }) {
               page === 2 ? "grid grid-cols-1 sm:grid-cols-2" : "flex flex-col"
             }`}
           >
-            {(page === 1 ? product : service).map((item, i) => (
-              <label key={i} className="flex items-center text-sm sm:text-base">
-                <input type="checkbox" />
-                <span className="ml-3">
-                  {item.text}{" "}
-                  <span
-                    className={`${item.value ? "text-black" : "text-gray-400"}`}
-                  >
-                    {item.day}
+            {currentList.map((item, i) => {
+              const checkboxId = `${page === 1 ? "product" : "service"}-${i}`;
+              const isChecked = selectedList.includes(i);
+
+              return (
+                <label
+                  key={i}
+                  htmlFor={checkboxId}
+                  className="flex items-center text-sm sm:text-base"
+                >
+                  <input
+                    id={checkboxId}
+                    type="checkbox"
+                    checked={isChecked}
+                    onChange={() =>
+                      handleCheckboxChange(
+                        page === 1 ? "product" : "service",
+                        i
+                      )
+                    }
+                  />
+                  <span className="ml-3">
+                    {item.text}{" "}
+                    <span
+                      className={`${
+                        item.value ? "text-black" : "text-gray-400"
+                      }`}
+                    >
+                      {item.day}
+                    </span>
                   </span>
-                </span>
-              </label>
-            ))}
+                </label>
+              );
+            })}
           </div>
 
+          {/* Footer Buttons */}
           <div className="w-full flex items-center justify-end border-t border-t-[#E3E3E3] mt-4 pt-4">
             <div className="flex gap-3 flex-wrap">
               {page !== 1 && (
                 <button
-                  className="border-2 text-black px-3 py-1 rounded text-sm sm:text-base"
-                  onClick={() => handleBtn("page-")}
+                  className="border-2 text-black px-3 py-1 rounded text-sm sm:text-base disabled:opacity-50 disabled:cursor-not-allowed"
+                  onClick={() => setPage(page - 1)}
+                  disabled={isFirstTime === "true"}
                 >
                   CANCEL
                 </button>
@@ -124,7 +165,11 @@ function SolutionAndProducts({ show, onClose }) {
               <button
                 className="bg-gradient-to-r from-[#27963D] to-[#134323] text-white px-3 py-1 rounded text-sm sm:text-base"
                 onClick={() => {
-                  page === 1 ? handleBtn("page+") : handleBtn("apply");
+                  if (page === 1 && selectedProducts.length === 0) {
+                    toast.error("Please select at least one Product.");
+                    return;
+                  }
+                  page === 1 ? setPage(page + 1) : handleApply();
                 }}
               >
                 {page === 1 ? "NEXT" : "APPLY"}

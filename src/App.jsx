@@ -6,6 +6,7 @@ import Form2 from "./Page/Form2";
 import Form3 from "./Page/Form3";
 import Success from "./Page/Success";
 import PromoCode from "./Page/PromoCode";
+import { ToastContainer } from "react-toastify";
 
 function App() {
   return (
@@ -18,6 +19,8 @@ function App() {
         <Route path="/PromoCode" element={<PromoCode />} />
         <Route path="/Success" element={<Success />} />
       </Routes>
+      <ToastContainer position="top-right" autoClose={3000} />
+
     </>
   );
 }
