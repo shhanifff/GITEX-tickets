@@ -410,8 +410,6 @@
 
 // export default Ticket;
 
-
-
 import React, { useEffect, useState } from "react";
 import Banner from "../Component/Banner";
 import Ticket1 from "../assets/images/Ticket1bg.png";
@@ -696,27 +694,28 @@ function Ticket() {
 
                       {ticket.features.length > 0 ? (
                         <div className="space-y-1.5">
-  {ticket.features.map((feature, index) => (
-    <span
-      key={index}
-      style={{
-        backgroundColor: feature.v ? "" : "rgba(0,0,0,0.4)", // lighter transparent bg
-        opacity: feature.v ? 1 : 0.5, // more faded if not available
-      }}
-      className="backdrop-blur-md bg-black/20 border border-white/10 text-white rounded-2xl px-2.5 py-1 text-xs inline-flex items-center gap-1.5 mr-1.5 mb-1.5"
-    >
-      <span
-        className={`${
-          feature.v ? "bg-green-600" : "bg-green-600/30"
-        } text-white px-1.5 rounded-full py-0.5 text-[10px]`}
-      >
-        ✓
-      </span>
-      {feature.text}
-    </span>
-  ))}
-</div>
-
+                          {ticket.features.map((feature, index) => (
+                            <span
+                              key={index}
+                              style={{
+                                backgroundColor: feature.v
+                                  ? ""
+                                  : "rgba(0,0,0,0.4)", // lighter transparent bg
+                                opacity: feature.v ? 1 : 0.5, // more faded if not available
+                              }}
+                              className="backdrop-blur-md bg-black/20 border border-white/10 text-white rounded-2xl px-2.5 py-1 text-xs inline-flex items-center gap-1.5 mr-1.5 mb-1.5"
+                            >
+                              <span
+                                className={`${
+                                  feature.v ? "bg-green-600" : "bg-green-600/30"
+                                } text-white px-1.5 rounded-full py-0.5 text-[10px]`}
+                              >
+                                ✓
+                              </span>
+                              {feature.text}
+                            </span>
+                          ))}
+                        </div>
                       ) : (
                         <div className="flex justify-center items-center pt-8 md:pt-12">
                           <img
@@ -730,60 +729,66 @@ function Ticket() {
 
                     {/* Price and Quantity Controls */}
                     <div className="w-full text-left mt-auto pt-6">
-                      <div className="w-full h-px mb-4 bg-gradient-to-r from-white/50 to-white/5"></div>
-                      <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
-                        <div>
-                          {ticket.features.length > 0 ? (
-                            <>
-                              <h1 className="text-white text-lg font-semibold">
-                                {ticket.price > 1 ? `₹${ticket.price}` : "FREE"}
-                              </h1>
-                              {ticket.offPrice > 1 && (
-                                <span className="text-xs text-[#8F8F8F] block leading-tight">
-                                  Original Price: ₹{ticket.offPrice}
-                                </span>
-                              )}
-                              <span className="text-xs text-[#8F8F8F] block leading-tight mt-1">
-                                INCL. {ticket.VAT_Percentage}% VAT
-                              </span>
-                            </>
-                          ) : (
-                            <>
-                              <div className="flex items-baseline gap-2">
-                                <span className="font-bold text-xl text-white">USD</span>
-                                <span className="text-gray-400 line-through text-lg">
-                                  {ticket.price}
-                                </span>
-                                <span className="bg-black border border-[#BDBDBD] px-3 py-1 rounded-[4.91px] text-white text-lg">
-                                  {ticket.offPrice}
-                                </span>
-                              </div>
-                              <span className="text-xs font-light text-gray-400 mt-1 block">
-                                Incl. {ticket.VAT_Percentage}% VAT
-                              </span>
-                            </>
-                          )}
-                        </div>
+  <div className="w-full h-px mb-4 bg-gradient-to-r from-white/50 to-white/5"></div>
 
-                        <span className="bg-white border rounded-sm border-white flex items-center">
-                          <button
-                            className="py-1 px-3 bg-black text-white rounded-tl-sm rounded-bl-sm cursor-pointer hover:bg-gray-800 transition-colors"
-                            onClick={() => handleQty(ticket.id, "dec")}
-                          >
-                            -
-                          </button>
-                          <span className="py-1 px-4 bg-white text-black font-semibold">
-                            {ticket.Quantity}
-                          </span>
-                          <button
-                            className="py-1 px-3 bg-black text-white rounded-tr-sm rounded-br-sm cursor-pointer hover:bg-gray-800 transition-colors"
-                            onClick={() => handleQty(ticket.id, "inc")}
-                          >
-                            +
-                          </button>
-                        </span>
-                      </div>
-                    </div>
+  <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
+    {/* Pricing Section */}
+    <div className="text-sm sm:text-base">
+      {ticket.features.length > 0 ? (
+        <>
+          <h1 className="text-white text-base sm:text-lg font-semibold">
+            {ticket.price > 1 ? `₹${ticket.price}` : "FREE"}
+          </h1>
+          {ticket.offPrice > 1 && (
+            <span className="text-xs sm:text-sm text-[#8F8F8F] block leading-tight">
+              Original Price: ₹{ticket.offPrice}
+            </span>
+          )}
+          <span className="text-xs sm:text-sm text-[#8F8F8F] block leading-tight mt-1">
+            INCL. {ticket.VAT_Percentage}% VAT
+          </span>
+        </>
+      ) : (
+        <>
+          <div className="flex items-baseline gap-2">
+            <span className="font-bold text-base sm:text-xl text-white">
+              USD
+            </span>
+            <span className="text-gray-400 line-through text-sm sm:text-lg">
+              {ticket.price}
+            </span>
+            <span className="bg-black border border-[#BDBDBD] px-2 py-1 rounded-[4.91px] text-white text-sm sm:text-lg">
+              {ticket.offPrice}
+            </span>
+          </div>
+          <span className="text-xs sm:text-sm font-light text-gray-400 mt-1 block">
+            Incl. {ticket.VAT_Percentage}% VAT
+          </span>
+        </>
+      )}
+    </div>
+
+    {/* Quantity Selector */}
+    <div className="bg-white border rounded-sm border-white flex items-center">
+      <button
+        className="py-1 px-3 bg-black text-white rounded-tl-sm rounded-bl-sm cursor-pointer hover:bg-gray-800 transition-colors"
+        onClick={() => handleQty(ticket.id, "dec")}
+      >
+        -
+      </button>
+      <span className="py-1 px-4 bg-white text-black font-semibold text-sm sm:text-base">
+        {ticket.Quantity}
+      </span>
+      <button
+        className="py-1 px-3 bg-black text-white rounded-tr-sm rounded-br-sm cursor-pointer hover:bg-gray-800 transition-colors"
+        onClick={() => handleQty(ticket.id, "inc")}
+      >
+        +
+      </button>
+    </div>
+  </div>
+</div>
+
                   </div>
                 </div>
               </div>
