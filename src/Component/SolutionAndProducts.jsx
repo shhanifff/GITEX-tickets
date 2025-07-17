@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 import BannerImg from "../assets/images/Banner.png";
 import { toast } from "react-toastify";
 
-function SolutionAndProducts({ show, onClose, bgColor }) {
+function SolutionAndProducts({ show, onClose }) {
   const [page, setPage] = useState(1);
   const [showModal, setShowModal] = useState(show);
   const isFirstTime = localStorage.getItem("firstTime");
@@ -24,8 +24,16 @@ function SolutionAndProducts({ show, onClose, bgColor }) {
       toast.error("Please select at least one Service.");
       return;
     }
+    
+    // Prepare the selected data to return
+    const selectedData = {
+      products: selectedProducts.map(index => product[index]),
+      services: selectedServices.map(index => service[index]),
+    };
+    
     setShowModal(false);
-    onClose();
+    // Pass the selected data back to parent component
+    onClose(selectedData);
   };
 
   const handleCheckboxChange = (type, index) => {
@@ -73,7 +81,7 @@ function SolutionAndProducts({ show, onClose, bgColor }) {
 
   return (
     <div
-      className={`fixed inset-0 ${bgColor} flex items-center justify-center z-50 p-4`}
+      className="fixed inset-0 bg-black/40 flex items-center justify-center z-50 p-4"
     >
       <div className="w-[90%] sm:w-[70%] md:w-[60%] lg:w-[50%] max-h-[90vh] bg-white rounded-2xl flex flex-col overflow-y-auto">
         {/* Banner Header */}
@@ -88,7 +96,11 @@ function SolutionAndProducts({ show, onClose, bgColor }) {
             SELECT SOLUTIONS/PRODUCTS
           </h1>
           <button
-            onClick={isFirstTime ?'':onClose}
+            onClick={() => {
+              if (isFirstTime == "false") {
+                onClose(null); 
+              }
+            }}
             className="text-white border border-white p-2 rounded-full hover:bg-white hover:text-black transition flex justify-center items-center"
           >
             <i className="bx bx-x text-lg" />
@@ -152,6 +164,7 @@ function SolutionAndProducts({ show, onClose, bgColor }) {
 
           {/* Footer Buttons */}
           <div className="w-full flex items-center justify-end border-t border-t-[#E3E3E3] mt-4 pt-4">
+
             <div className="flex gap-3 flex-wrap">
               {page !== 1 && (
                 <button

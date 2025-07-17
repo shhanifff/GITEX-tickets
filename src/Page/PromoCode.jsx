@@ -109,11 +109,12 @@ function PromoCode() {
                         } px-3 py-2 rounded-[4px] placeholder:text-xs border border-gray-300 focus:outline-none focus:border-[#26903B]`}
                         placeholder="Enter Code"
                         {...register("promoCode", {
-                          required: false,
-                          pattern: {
-                            value: /^[A-Z0-9]{4,10}$/,
-                            message:
-                              "Promo code must be 4-10 alphanumeric characters",
+                          validate: (value) => {
+                            if (!value) return true;
+                            const onlyLetters = /^[A-Za-z]+$/.test(value);
+                            return (
+                              onlyLetters || "Only letters (A-Z or a-z) allowed"
+                            );
                           },
                         })}
                       />
@@ -140,9 +141,7 @@ function PromoCode() {
                           Promo code "{promoCode}" applied successfully! Applied
                           to 2 lowest-priced tickets!
                         </h1>
-                        <div
-                          className="w-full bg-white flex flex-col sm:flex-row justify-between px-3 py-2 rounded-md gap-4 sm:gap-0"
-                        >
+                        <div className="w-full bg-white flex flex-col sm:flex-row justify-between px-3 py-2 rounded-md gap-4 sm:gap-0">
                           <div className="flex flex-col">
                             <h1>
                               Promo code applied:{" "}

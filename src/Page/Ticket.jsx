@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import Banner from "../Component/Banner";
 import Ticket1 from "../assets/images/Ticket1bg.png";
 import Ticket2 from "../assets/images/Ticket2.jpg";
@@ -10,24 +10,11 @@ import Checks from "../assets/images/Checks.png";
 import Footer from "../Component/Footer";
 import featureLogo from "../assets/images/featers_logo.png";
 import Vector from "../assets/images/Vector.png";
-import { useNavigate } from "react-router-dom";
-import FirstTime from "../Component/FirstTime";
 
 function Ticket() {
-  const navigate = useNavigate();
+  // const navigate = useNavigate();
 
-  useEffect(() => {
-    const isFirstTime = localStorage.getItem("firstTime");
-
-    if (isFirstTime === null) {
-      localStorage.setItem("firstTime", "true");
-      navigate("/Form1");
-    } else if (isFirstTime === "true") {
-      navigate("/Form1");
-    }
-  }, []);
-
-  const tickets = [
+  const [tickets, setTickets] = useState([
     {
       id: 1,
       title: "Visitor 3 Day Access Ticket",
@@ -36,10 +23,11 @@ function Ticket() {
       features: [],
       offer: "",
       price: 43,
+      offPrice: 32.5,
       VAT_Percentage: 20,
       BgStart: "#5B2A7C",
       BgEnd: "#451D5D",
-      Quantity: 25,
+      Quantity: 0,
       BgImg: Ticket1,
     },
     {
@@ -57,6 +45,7 @@ function Ticket() {
       ],
       offer: "",
       price: 0,
+      offPrice: 0,
       VAT_Percentage: 19,
       BgStart: "#CD670A",
       BgEnd: "#CA3722",
@@ -78,6 +67,7 @@ function Ticket() {
       ],
       offer: "EXCLUSIVE",
       price: 0,
+      offPrice: 0,
       VAT_Percentage: 19,
       BgStart: "#173903",
       BgEnd: "#081D01",
@@ -99,6 +89,7 @@ function Ticket() {
       ],
       offer: "BEST SELLER",
       price: 0,
+      offPrice: 0,
       VAT_Percentage: 19,
       BgStart: "#B5040A",
       BgEnd: "#631308",
@@ -120,6 +111,7 @@ function Ticket() {
       ],
       offer: "",
       price: 0,
+      offPrice: 0,
       VAT_Percentage: 19,
       BgStart: "#53BE2C",
       BgEnd: "#27870C",
@@ -141,13 +133,45 @@ function Ticket() {
       ],
       offer: "",
       price: 0,
+      offPrice: 0,
       VAT_Percentage: 19,
       BgStart: "#004D98",
       BgEnd: "#01277C",
       Quantity: 0,
       BgImg: Ticket6,
     },
-  ];
+  ]);
+
+  const [selectTicket, setSelectTicket] = useState({});
+
+  const handleQty = (id, action) => {
+    const updateQty = tickets.map((x) => {
+      if (x.id === id) {
+        let updatedQty = x.Quantity;
+
+        if (action === "inc") {
+          updatedQty = x.Quantity + 1;
+        } else if (action === "dec" && x.Quantity > 0) {
+          updatedQty = x.Quantity - 1;
+        }
+
+        setSelectTicket((prev) => ({
+          ...prev,
+          [id]: { ...x, Quantity: updatedQty },
+        }));
+
+        return { ...x, Quantity: updatedQty };
+      }
+
+      return x;
+    });
+
+    setTickets(updateQty);
+  };
+
+  useEffect(() => {
+    console.log("user chose ticket", selectTicket);
+  }, [selectTicket]);
 
   return (
     <>
@@ -296,17 +320,31 @@ function Ticket() {
                           <div>
                             <h1 className="text-white text-lg font-semibold mt-1">
                               {ticket.price > 1 ? `₹${ticket.price}` : "FREE"}
+                              {ticket.offPrice > 1
+                                ? `₹${ticket.offPrice}`
+                                : "FREE"}
                             </h1>
                             <span className="text-xs text-[#8F8F8F] block leading-tight ">
                               INCL. {ticket.VAT_Percentage}% VAT
                             </span>
                           </div>
-                          <div
-                            className="text-black mt-3 bg-white px-3 py-1 font-bold rounded-[7px] cursor-pointer"
-                            onClick={() => navigate("/Form1")}
-                          >
-                            BUY NOW
-                          </div>
+                          <span className="bg-white border rounded-sm border-white ">
+                            <button
+                              className="py-1 px-2 bg-black text-white  rounded-tl-sm rounded-bl-sm cursor-pointer"
+                              onClick={() => handleQty(ticket.id, "dec")}
+                            >
+                              -
+                            </button>
+                            <span className="py-1 px-3 bg-white text-black ">
+                              {ticket.Quantity}
+                            </span>
+                            <button
+                              className="py-1 px-2 bg-black text-white rounded-tr-sm rounded-br-sm cursor-pointer"
+                              onClick={() => handleQty(ticket.id, "inc")}
+                            >
+                              +
+                            </button>
+                          </span>
                         </div>
                       </>
                     ) : (
@@ -327,7 +365,7 @@ function Ticket() {
                               </span>
                               {"  "}
                               <span className="bg-black border border-[#BDBDBD] px-3 py-1 rounded-[4.91px]">
-                                {ticket.price - 10.5}
+                                {ticket.offPrice}
                               </span>
                               {"  "}
                               <span className="text-xs font-light">
@@ -336,17 +374,20 @@ function Ticket() {
                             </>
                           </span>
 
-                          <span
-                            className="bg-white border rounded-sm border-white cursor-pointer"
-                            onClick={() => navigate("/Form1")}
-                          >
-                            <button className="py-1 px-2 bg-black text-white  rounded-tl-sm rounded-bl-sm cursor-pointer">
+                          <span className="bg-white border rounded-sm border-white ">
+                            <button
+                              className="py-1 px-2 bg-black text-white  rounded-tl-sm rounded-bl-sm cursor-pointer"
+                              onClick={() => handleQty(ticket.id, "dec")}
+                            >
                               -
                             </button>
                             <span className="py-1 px-3 bg-white text-black ">
                               {ticket.Quantity}
                             </span>
-                            <button className="py-1 px-2 bg-black text-white rounded-tr-sm rounded-br-sm cursor-pointer">
+                            <button
+                              className="py-1 px-2 bg-black text-white rounded-tr-sm rounded-br-sm cursor-pointer"
+                              onClick={() => handleQty(ticket.id, "inc")}
+                            >
                               +
                             </button>
                           </span>
@@ -362,6 +403,7 @@ function Ticket() {
       </div>
 
       <Banner />
+      <Footer selectTicket={selectTicket} />
     </>
   );
 }

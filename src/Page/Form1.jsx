@@ -34,7 +34,7 @@ function Form1() {
       jobTitle: "",
       companyType: "",
       industry: "",
-      workshops: Array(12).fill(false), // Initialize workshops array with false values
+      workshops: Array(12).fill(false),
     },
   });
 
@@ -58,23 +58,29 @@ function Form1() {
   const [modalBg, setModalBg] = useState("bg-black/40");
 
   const handleModal = () => {
-    setModalBg("bg-black/40");
     setShowModal(true);
   };
-
-  useEffect(() => {
-    const isFirstTime = localStorage.getItem("firstTime");
-
-    if (isFirstTime === "true") {
-      setModalBg("bg-black");
-      setShowModal(true);
-    }
-  }, []);
 
   const onSubmit = (data) => {
     console.log(data);
     navigate("/Form2");
   };
+
+  const [selectedData, setSelectedData] = useState([]);
+  const handleData = (data) => {
+    setShowModal(false);
+    setMainAndSub(true);
+    if (data) {
+      // console.log("selected data", data);
+      setSelectedData(data);
+      return;
+    }
+    console.log("empty");
+  };
+
+  useEffect(() => {
+    console.log("selected data in useffect", selectedData);
+  }, [selectedData]);
 
   return (
     <>
@@ -85,10 +91,7 @@ function Form1() {
         <SolutionAndProducts
           bgColor={modalBg}
           show={true}
-          onClose={() => {
-            setShowModal(false);
-            setMainAndSub(true);
-          }}
+          onClose={handleData}
         />
       )}
 
@@ -101,7 +104,7 @@ function Form1() {
         <form onSubmit={handleSubmit(onSubmit)}>
           <div className="max-w-7xl mx-auto mt-8 bg-white rounded-lg shadow p-4 md:p-6 lg:p-10 border border-[#579B29]">
             <div className="flex flex-col lg:flex-row gap-6 lg:gap-12 lg:items-start">
-              <div className="w-full lg:w-[65%] shadow rounded-lg">
+              <div className="w-full lg:w-[65%] shadow rounded-lg pb-6">
                 <div className="w-full h-20 sm:h-24 rounded-t-lg bg-gradient-to-r from-[#299D3F] to-[#123F22] px-4 flex flex-col sm:flex-row justify-between items-center gap-2 sm:gap-0">
                   <h1 className="text-white text-lg sm:text-2xl lg:text-3xl font-bold text-center sm:text-left">
                     Registration Information 1
@@ -219,7 +222,7 @@ function Form1() {
                         <option value="+49">🇩🇪 +49</option>
                       </select>
                       <input
-                        type="text"
+                        type="number"
                         placeholder="Enter mobile number"
                         {...register("mobileNumber", {
                           required: "Mobile number is required",
@@ -327,12 +330,11 @@ function Form1() {
                         Main Categories
                       </h1>
                       <div className="flex flex-wrap gap-2 sm:gap-3 mt-3">
-                        <p className="bg-[#5E3169] text-white px-3 py-1 rounded-2xl font-semibold text-xs sm:text-sm">
-                          Artificial Intelligence & Robotics
-                        </p>
-                        <p className="bg-[#5E3169] text-white px-3 py-1 rounded-2xl font-semibold text-xs sm:text-sm">
-                          Artificial Intelligence & Robotics
-                        </p>
+                        {selectedData.products.map((item) => (
+                          <p className="bg-[#5E3169] text-white px-3 py-1 rounded-2xl font-semibold text-xs sm:text-sm">
+                            {item.text}
+                          </p>
+                        ))}
                       </div>
                     </div>
                     <div>
@@ -340,73 +342,15 @@ function Form1() {
                         Sub Categories
                       </h1>
                       <div className="flex flex-wrap gap-2 sm:gap-3 mt-3">
-                        <p className="bg-[#F5F5F5] border font-semibold border-[#D0D0D0] text-[#616161] px-3 py-1 rounded-2xl text-xs sm:text-sm">
-                          Edge Computing
-                        </p>
-                        <p className="bg-[#F5F5F5] border font-semibold border-[#D0D0D0] text-[#616161] px-3 py-1 rounded-2xl text-xs sm:text-sm">
-                          AI & Robotics
-                        </p>
-                        <p className="bg-[#F5F5F5] border font-semibold border-[#D0D0D0] text-[#616161] px-3 py-1 rounded-2xl text-xs sm:text-sm">
-                          Edge Computing
-                        </p>
+                        {selectedData.services.map((item) => (
+                          <p className="bg-[#F5F5F5] border font-semibold border-[#D0D0D0] text-[#616161] px-3 py-1 rounded-2xl text-xs sm:text-sm">
+                            {item.text}
+                          </p>
+                        ))}
                       </div>
                     </div>
                   </div>
                 )}
-
-                <div className="flex flex-col gap-3 px-6 py-5">
-                  <h1 className="font-medium text-sm sm:text-base">
-                    Select Workshop{" "}
-                    <span className="text-[#6F6969]">
-                      (Maximum 6 can Select, at least 1 required)
-                    </span>
-                  </h1>
-                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-x-6">
-                    {items.map((item, index) => (
-                      <label
-                        key={index}
-                        className="flex items-center gap-2 mb-2 cursor-pointer"
-                      >
-                        <input
-                          type="checkbox"
-                          className="w-4 h-4 accent-green-600"
-                          {...register(`workshops.${index}`, {
-                            validate: (value) => {
-                              const selectedWorkshops =
-                                watch("workshops") || [];
-                              const selectedCount = selectedWorkshops.filter(
-                                (item) => item
-                              ).length;
-                              if (selectedCount === 0) {
-                                return "At least one workshop must be selected";
-                              }
-                              if (selectedCount > 6) {
-                                return "You can select a maximum of 6 workshops";
-                              }
-                              return true;
-                            },
-                          })}
-                        />
-                        <h2>
-                          {item.text}{" "}
-                          <span
-                            className={
-                              item.value ? "text-black" : "text-gray-400"
-                            }
-                          >
-                            {item.day}
-                          </span>
-                        </h2>
-                      </label>
-                    ))}
-                  </div>
-                  {errors.workshops && (
-                    <p className="text-[#DF1E3B] text-xs mt-1">
-                      {errors.workshops.message ||
-                        "You must select at least one workshop and no more than 6"}
-                    </p>
-                  )}
-                </div>
               </div>
 
               <div className="w-full lg:w-[35%] xl:w-[30%] flex flex-col bg-white shadow rounded-xl lg:self-start">
@@ -425,16 +369,16 @@ function Form1() {
                     Registration Information 1
                   </div>
                   <div className="flex flex-col gap-3 sm:gap-4 text-center flex-1">
-                    <h1 className="text-lg sm:text-xl font-semibold text-[#D4D4D4]">
+                    <h1 className="text-lg sm:text-xl font-semibold text-[#D4D4D4] uppercase">
                       {watch("firstName") || "FULL NAME"}
                     </h1>
-                    <h1 className="text-sm sm:text-base text-[#D4D4D4]">
+                    <h1 className="text-sm sm:text-base text-[#D4D4D4] uppercase">
                       {watch("jobTitle") || "JOB TITLE"}
                     </h1>
-                    <h1 className="text-sm sm:text-base text-[#D4D4D4]">
+                    <h1 className="text-sm sm:text-base text-[#D4D4D4] uppercase">
                       {watch("companyName") || "COMPANY NAME"}
                     </h1>
-                    <h1 className="text-sm sm:text-base text-[#D4D4D4]">
+                    <h1 className="text-sm sm:text-base text-[#D4D4D4] uppercase">
                       {watch("countryOfResidence") || "COUNTRY OF RESIDENCE"}
                     </h1>
                   </div>
